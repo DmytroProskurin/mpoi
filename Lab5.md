@@ -1,3 +1,30 @@
+Код:
+```r
+# Download the data
+> a <- read_html("http://www.imdb.com/search/title?count=100&release_date=2017,2017&title_type=feature")
+
+# Parse rank position
+> rank_data_html <- html_nodes(a,'.text-primary')
+> rank_data <- html_text(rank_data_html)
+# Convert ranks to numbers
+> rank_data<-as.numeric(rank_data)
+
+# Parse the movie titles
+> title_data_html <- html_nodes(a,'.lister-item-header a')
+> title_data <- html_text(title_data_html)
+
+# Parse the Duration of movies
+> runtime_data_html <- html_nodes(a,'.text-muted .runtime')
+> runtime_data <- html_text(runtime_data_html)
+# Delete the trailing " min" in durations
+> runtime_data<-gsub(" min","",runtime_data)
+# Convert durations to numbers
+> runtime_data<-as.numeric(runtime_data)
+
+# Create the data frame
+> movies <- data.frame(Rank = rank_data, Title = title_data, Runtime = runtime_data, stringsAsFactors = FALSE )
+```
+
 1.	Виведіть перші 6 назв фільмів дата фрейму.
 ```r
 > head(movies$Title, 6)
